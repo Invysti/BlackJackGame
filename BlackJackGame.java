@@ -2,17 +2,22 @@ import java.util.*;
 import java.lang.Math;
 
 public class BlackJackGame {
+
 	public static final int CARDS = 52;
+	private static Card[] cards = new Card[CARDS];
 
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System.in);
 		intro(keyboard);
 		getRounds(keyboard);
-		
-		
+		fill();
+		for(int i = 0; i < CARDS; i++) {
+			System.out.println(cards[i].toString());
+		}
+		System.out.println("Program done");
 	}
-	
-	// Prints out the intro to the game.
+
+	// Prints out the introduction to the game.
 	public static void intro(Scanner keyboard) {
 		System.out.print("Welcome to BlackJack! Please enter your name: ");
 		String playerName = keyboard.nextLine();
@@ -34,4 +39,14 @@ public class BlackJackGame {
 		return rounds;
 	}
 	
+	public static void fill() {
+		int i = 0;
+		for (Suit s : Suit.values()) {
+			for (Value v : Value.values()) {
+				cards[i] = new Card(v,s);
+				i++;
+			}
+		}
+	}
+
 }
