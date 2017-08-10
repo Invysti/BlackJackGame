@@ -1,5 +1,4 @@
 import java.util.*;
-import java.lang.Math;
 
 public class BlackJackGame {
 
@@ -11,6 +10,7 @@ public class BlackJackGame {
 		intro(keyboard);
 		getRounds(keyboard);
 		fill();
+		shuffle(cards, cards.length);
 		for(int i = 0; i < CARDS; i++) {
 			System.out.println(cards[i].toString());
 		}
@@ -46,6 +46,16 @@ public class BlackJackGame {
 				cards[i] = new Card(v,s);
 				i++;
 			}
+		}
+	}
+	
+	public static void shuffle(Card arr[], int n) {
+		Random r = new Random();
+		for (int i = n-1; i > 0; i--) {
+			int j = r.nextInt(i);
+			Card temp = arr[i];
+			arr[i] = arr[j];
+			arr[j] = temp;
 		}
 	}
 
