@@ -3,25 +3,22 @@ import java.util.*;
 public class BlackJackGame {
 
 	public static final int CARDS = 52;
-	private static Card[] cards = new Card[CARDS];
+	private static ArrayList<Card> deck = new ArrayList<Card>();
 
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System.in);
 		intro(keyboard);
 		getRounds(keyboard);
 		fill();
-		shuffle(cards, cards.length);
-		for(int i = 0; i < CARDS; i++) {
-			System.out.println(cards[i].toString());
-		}
-		System.out.println("Program done");
+		Collections.shuffle(deck);
+		// TODO play game
 	}
 
 	// Prints out the introduction to the game.
 	public static void intro(Scanner keyboard) {
 		System.out.print("Welcome to BlackJack! Please enter your name: ");
 		String playerName = keyboard.nextLine();
-		System.out.print("Hello " + playerName + ". Let's begin!");
+		System.out.println("Hello " + playerName + ". Let's begin!");
 	}
 	
 	// Gets the number of rounds the user would like to play.
@@ -43,20 +40,9 @@ public class BlackJackGame {
 		int i = 0;
 		for (Suit s : Suit.values()) {
 			for (Value v : Value.values()) {
-				cards[i] = new Card(v,s);
+				deck.add(new Card(v,s));
 				i++;
 			}
 		}
 	}
-	
-	public static void shuffle(Card arr[], int n) {
-		Random r = new Random();
-		for (int i = n-1; i > 0; i--) {
-			int j = r.nextInt(i);
-			Card temp = arr[i];
-			arr[i] = arr[j];
-			arr[j] = temp;
-		}
-	}
-
 }
