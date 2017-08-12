@@ -18,7 +18,7 @@ public class BlackJackGame {
 		System.out.println(deck.toString());
 		dealCards();
 		int playerTotal = playerTurn(keyboard);
-		System.out.println("Player cards: " + playerCards.toString());
+		
 	}
 
 	// Prints out the introduction to the game.
@@ -66,31 +66,35 @@ public class BlackJackGame {
 		return currentCard;
 	}
 	
-	// TODO hold functionality is broken here when playerTotal is < 20
+	// Player's turn
 	public static int playerTurn(Scanner keyboard) {
+		// Gets player's beginning total
 		int playerTotal = 0;
 		for (int i = 0; i < playerCards.size(); i++) {
 			playerTotal += playerCards.get(i).getValue().getCardValue();	
 		}
-		playerTotal = hit(keyboard, playerTotal);
-		System.out.println("Your final total is: " + playerTotal);
-		return playerTotal;
-	}
-	
-	// Add card if user chooses to hit
-	public static int hit(Scanner keyboard, int playerTotal) {
+		// Prompts user if they would like to hit and checks whether they type hit and if they have a hand below 21
 		String playerChoice = "";
 		do {
 			System.out.println("Player cards: " + playerCards.toString());
 			System.out.println("Your total is: " + playerTotal);
 			playerChoice = hitPrompt(keyboard);
-			if (playerChoice.equalsIgnoreCase("hit")) {
-				playerCards.add(deck.get(currentCard));
-				playerTotal += deck.get(currentCard).getValue().getCardValue();
-				currentCard++;
-			}
+			playerTotal += hit(keyboard, playerChoice);
 		} while (playerChoice.equals("hit") && playerTotal <= 21);
+		System.out.println("Player cards: " + playerCards.toString());
+		System.out.println("Your final total is: " + playerTotal);
 		return playerTotal;
+	}
+	
+	// Add card if user chooses to hit
+	public static int hit(Scanner keyboard, String playerChoice) {
+		int newCard = 0;
+		if (playerChoice.equalsIgnoreCase("hit")) {
+			playerCards.add(deck.get(currentCard));
+			newCard = deck.get(currentCard).getValue().getCardValue();
+			currentCard++;
+		}
+		return newCard;
 	}
 	
 	// Ask the user if they would like to hit
