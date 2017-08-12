@@ -6,6 +6,7 @@ public class BlackJackGame {
 	private static ArrayList<Card> deck = new ArrayList<Card>();
 	private static ArrayList<Card> playerCards = new ArrayList<Card>();
 	private static ArrayList<Card> computerCards = new ArrayList<Card>();
+	static int currentCard = 0;
 
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System.in);
@@ -15,10 +16,11 @@ public class BlackJackGame {
 		// play game
 		Collections.shuffle(deck);
 		System.out.println(deck.toString());
-		int currentCard = 0;
-		currentCard = dealCards(currentCard);
-		System.out.println("Player Cards: " + playerCards.toString());
-		System.out.println("Dealer Card: " + computerCards.get(0).toString());
+		dealCards();
+		System.out.println("Player cards: " + playerCards.toString());
+		playerTurn(keyboard);
+		System.out.println("Player cards: " + playerCards.toString());
+		
 		
 		// while player is <= 21 && hit it is player turn
 		
@@ -64,7 +66,7 @@ public class BlackJackGame {
 		}
 	}
 	
-	public static int dealCards(int currentCard) {
+	public static int dealCards() {
 		// TODO deal with redundancy
 		playerCards.add(deck.get(currentCard));
 		currentCard++;
@@ -75,5 +77,22 @@ public class BlackJackGame {
 		computerCards.add(deck.get(currentCard));
 		currentCard++;
 		return currentCard;
+	}
+	
+	public static void playerTurn(Scanner keyboard) {
+		hit(keyboard);
+	}
+	
+	// Ask user if they would like to hit or hold
+	public static void hit(Scanner keyboard) {
+		String hit = "";
+		while (!(hit.equalsIgnoreCase("hit") || hit.equalsIgnoreCase("hold"))) {
+			System.out.print("Would you like to hit or hold?: ");
+			hit = keyboard.next();
+		}
+		if (hit.equalsIgnoreCase("hit")) {
+			playerCards.add(deck.get(currentCard));
+			currentCard++;
+		}
 	}
 }
