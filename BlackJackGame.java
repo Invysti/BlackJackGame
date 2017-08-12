@@ -14,26 +14,11 @@ public class BlackJackGame {
 		int rounds = getRounds(keyboard);
 		fill();
 		// play game
-		Collections.shuffle(deck);
+		
 		System.out.println(deck.toString());
 		dealCards();
+		int playerTotal = playerTurn(keyboard);
 		System.out.println("Player cards: " + playerCards.toString());
-		playerTurn(keyboard);
-		System.out.println("Player cards: " + playerCards.toString());
-		
-		
-		// while player is <= 21 && hit it is player turn
-		
-		for (int i = 0; i < rounds; i++) {
-			// TODO play game
-				// deal cards 1 to player, 1 to dealer, etc
-				// let player decide what to do
-				// hit is another card
-				// check total
-				// computer hits until >= 17
-		}
-		
-		
 	}
 
 	// Prints out the introduction to the game.
@@ -58,6 +43,7 @@ public class BlackJackGame {
 		return rounds;
 	}
 	
+	// Fills the deck with cards
 	public static void fill() {
 		for (Suit s : Suit.values()) {
 			for (Value v : Value.values()) {
@@ -66,8 +52,9 @@ public class BlackJackGame {
 		}
 	}
 	
+	// Shuffles and deals starting cards
 	public static int dealCards() {
-		// TODO deal with redundancy
+		Collections.shuffle(deck);
 		playerCards.add(deck.get(currentCard));
 		currentCard++;
 		computerCards.add(deck.get(currentCard));
@@ -79,20 +66,40 @@ public class BlackJackGame {
 		return currentCard;
 	}
 	
-	public static void playerTurn(Scanner keyboard) {
-		hit(keyboard);
+	// TODO hold functionality is broken here when playerTotal is < 20
+	public static int playerTurn(Scanner keyboard) {
+		int playerTotal = 0;
+		for (int i = 0; i < playerCards.size(); i++) {
+			playerTotal += playerCards.get(i).getValue().getCardValue();	
+		}
+		playerTotal = hit(keyboard, playerTotal);
+		System.out.println("Your final total is: " + playerTotal);
+		return playerTotal;
 	}
 	
-	// Ask user if they would like to hit or hold
-	public static void hit(Scanner keyboard) {
+	// Add card if user chooses to hit
+	public static int hit(Scanner keyboard, int playerTotal) {
+		String playerChoice = "";
+		do {
+			System.out.println("Player cards: " + playerCards.toString());
+			System.out.println("Your total is: " + playerTotal);
+			playerChoice = hitPrompt(keyboard);
+			if (playerChoice.equalsIgnoreCase("hit")) {
+				playerCards.add(deck.get(currentCard));
+				playerTotal += deck.get(currentCard).getValue().getCardValue();
+				currentCard++;
+			}
+		} while (playerChoice.equals("hit") && playerTotal <= 21);
+		return playerTotal;
+	}
+	
+	// Ask the user if they would like to hit
+	public static String hitPrompt(Scanner keyboard) {
 		String hit = "";
 		while (!(hit.equalsIgnoreCase("hit") || hit.equalsIgnoreCase("hold"))) {
 			System.out.print("Would you like to hit or hold?: ");
 			hit = keyboard.next();
 		}
-		if (hit.equalsIgnoreCase("hit")) {
-			playerCards.add(deck.get(currentCard));
-			currentCard++;
-		}
+		return hit;
 	}
 }
