@@ -66,6 +66,11 @@ public class BlackJackGame {
 		return currentCard;
 	}
 	
+	// TODO adjust for ace possibility (1 or 11);
+	// TODO setup computer's turn
+	// TODO check winner
+	
+	
 	// Player's turn
 	public static int playerTurn(Scanner keyboard) {
 		// Gets player's beginning total
