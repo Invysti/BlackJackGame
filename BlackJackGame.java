@@ -1,5 +1,8 @@
 import java.util.*;
 
+// TODO check winner
+// TODO work on abstraction/redundancy for playerTurn and computerTurn
+
 public class BlackJackGame {
 
 	public static final int CARDS = 52;
@@ -11,13 +14,13 @@ public class BlackJackGame {
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System.in);
 		intro(keyboard);
-		int rounds = getRounds(keyboard);
+		//int rounds = getRounds(keyboard);
 		fill();
 		// play game
 		dealCards();
 		int playerTotal = playerTurn(keyboard);
 		int computerTotal = computerTurn();
-		
+		checkWin(playerTotal, computerTotal);
 	}
 
 	// Prints out the introduction to the game.
@@ -74,12 +77,7 @@ public class BlackJackGame {
 		return currentCard;
 	}
 	
-	// TODO setup computer's turn
-	// TODO check winner
-	
-	
 	// Player's turn
-	// TODO work on abstraction here
 	public static int playerTurn(Scanner keyboard) {
 		// Gets player's beginning total
 		// Two separate variables to take into account aces
@@ -126,7 +124,6 @@ public class BlackJackGame {
 	}
 	
 	// Add card if user chooses to hit
-	// TODO Add card if computer needs to hit
 	public static int hit(Scanner keyboard, String playerChoice) {
 		int newCard = 0;
 		if (playerChoice.equalsIgnoreCase("hit")) {
@@ -147,6 +144,7 @@ public class BlackJackGame {
 		return hit;
 	}
 	
+	// Computer's turn, computer hits as long as it has less than 17
 	public static int computerTurn() {
 		int computerTotal = 0;
 		int computerTotalAces = 0;
@@ -159,13 +157,13 @@ public class BlackJackGame {
 			computerTotal += computerCards.get(i).getValue().getCardValue();
 		}
 		do {
-			System.out.println("Computer cards: " + computerCards.toString());
+			System.out.println("Dealer's cards: " + computerCards.toString());
 			if (computerTotal != computerTotalAces) {
-				System.out.println("Computer's total is: " + computerTotal + " or " + computerTotalAces);;
+				System.out.println("Dealer's total is: " + computerTotal + " or " + computerTotalAces);;
 			} else {
-				System.out.println("Computer's total is: " + computerTotal);
+				System.out.println("Dealer's total is: " + computerTotal);
 			}
-			System.out.println("Computer hits.");
+			System.out.println("Dealer hits.");
 			computerCards.add(deck.get(currentCard));
 			int newCard = deck.get(currentCard).getValue().getCardValue();
 			currentCard++;
@@ -179,13 +177,27 @@ public class BlackJackGame {
 		} while (computerTotal <= 17 || computerTotalAces <= 17);
 		
 		if (computerTotalAces < 21 && computerTotalAces > computerTotal) {
-			System.out.println("Computer's cards: " + computerCards.toString());
-			System.out.println("Computer's final total is: " + computerTotalAces);
+			System.out.println("Dealer's cards: " + computerCards.toString());
+			System.out.println("Dealer's final total is: " + computerTotalAces);
 			return computerTotalAces;
 		} else {
-			System.out.println("Computer's cards: " + computerCards.toString());
-			System.out.println("Computer's final total is: " + computerTotal);
+			System.out.println("Dealer's cards: " + computerCards.toString());
+			System.out.println("Dealer's final total is: " + computerTotal);
 		}
 		return computerTotal;
+	}
+	
+	public static void checkWin(int playerTotal, int computerTotal) {
+		if (playerTotal > 21 && computerTotal > 21) {
+			System.out.println("You and the Dealer busted! It's a draw.");
+		} else if (playerTotal > 21 && computerTotal < 21) {
+			System.out.println("You busted! The Dealer wins.");
+		} else if (playerTotal < 21 && computerTotal > 21) {
+			System.out.println("The Dealer busted! You win!!");
+		} else if (playerTotal < 21 && computerTotal < 21 && playerTotal > computerTotal) {
+			System.out.println("Your " + playerTotal + " is greater than the Dealer's " + computerTotal + ". You win!!");
+		} else {
+			System.out.println("Your " + playerTotal + " is less than the Dealer's " + computerTotal + ". You lose.");
+		}
 	}
 }
