@@ -14,10 +14,9 @@ public class BlackJackGame {
 		int rounds = getRounds(keyboard);
 		fill();
 		// play game
-		
-		System.out.println(deck.toString());
 		dealCards();
 		int playerTotal = playerTurn(keyboard);
+		int computerTotal = computerTurn();
 		
 	}
 
@@ -50,11 +49,20 @@ public class BlackJackGame {
 				deck.add(new Card(v,s));
 			}
 		}
+		/*Test Code
+		deck.add(new Card(Value.TWO, Suit.CLUBS));
+		deck.add(new Card(Value.TWO, Suit.HEARTS));
+		deck.add(new Card(Value.TWO, Suit.DIAMONDS));
+		deck.add(new Card(Value.TWO, Suit.SPADES));
+		deck.add(new Card(Value.ACE, Suit.CLUBS));
+		deck.add(new Card(Value.ACE, Suit.DIAMONDS));
+		deck.add(new Card(Value.KING, Suit.DIAMONDS));*/
 	}
 	
 	// Shuffles and deals starting cards
 	public static int dealCards() {
 		Collections.shuffle(deck);
+		System.out.println(deck.toString());
 		playerCards.add(deck.get(currentCard));
 		currentCard++;
 		computerCards.add(deck.get(currentCard));
@@ -66,32 +74,59 @@ public class BlackJackGame {
 		return currentCard;
 	}
 	
-	// TODO adjust for ace possibility (1 or 11);
 	// TODO setup computer's turn
 	// TODO check winner
 	
 	
 	// Player's turn
+	// TODO work on abstraction here
 	public static int playerTurn(Scanner keyboard) {
 		// Gets player's beginning total
+		// Two separate variables to take into account aces
+		// playerTotal considers aces as 1 while playerTotalAces considers Aces as 11
 		int playerTotal = 0;
+		int playerTotalAces = 0;
 		for (int i = 0; i < playerCards.size(); i++) {
-			playerTotal += playerCards.get(i).getValue().getCardValue();	
+			if (playerCards.get(i).getValue().getCardValue() == 1) {
+				playerTotalAces += 11;
+			} else {
+				playerTotalAces += playerCards.get(i).getValue().getCardValue();
+			}
+			playerTotal += playerCards.get(i).getValue().getCardValue();
 		}
 		// Prompts user if they would like to hit and checks whether they type hit and if they have a hand below 21
 		String playerChoice = "";
 		do {
 			System.out.println("Player cards: " + playerCards.toString());
-			System.out.println("Your total is: " + playerTotal);
+			if (playerTotal != playerTotalAces) {
+				System.out.println("Your total is: " + playerTotal + " or " + playerTotalAces);;
+			} else {
+				System.out.println("Your total is: " + playerTotal);
+			}
 			playerChoice = hitPrompt(keyboard);
-			playerTotal += hit(keyboard, playerChoice);
+			int newCard = hit(keyboard, playerChoice);
+			if (newCard == 1 && playerTotal == playerTotalAces) {
+				playerTotal += 1;
+				playerTotalAces += 11;
+			} else {
+				playerTotal += newCard;
+				playerTotalAces += newCard;
+			}
+			
 		} while (playerChoice.equals("hit") && playerTotal <= 21);
-		System.out.println("Player cards: " + playerCards.toString());
-		System.out.println("Your final total is: " + playerTotal);
+		if (playerTotalAces < 21 && playerTotalAces > playerTotal) {
+			System.out.println("Player cards: " + playerCards.toString());
+			System.out.println("Your final total is: " + playerTotalAces);
+			return playerTotalAces;
+		} else {
+			System.out.println("Player cards: " + playerCards.toString());
+			System.out.println("Your final total is: " + playerTotal);
+		}
 		return playerTotal;
 	}
 	
 	// Add card if user chooses to hit
+	// TODO Add card if computer needs to hit
 	public static int hit(Scanner keyboard, String playerChoice) {
 		int newCard = 0;
 		if (playerChoice.equalsIgnoreCase("hit")) {
@@ -110,5 +145,47 @@ public class BlackJackGame {
 			hit = keyboard.next();
 		}
 		return hit;
+	}
+	
+	public static int computerTurn() {
+		int computerTotal = 0;
+		int computerTotalAces = 0;
+		for (int i = 0; i < computerCards.size(); i++) {
+			if (computerCards.get(i).getValue().getCardValue() == 1) {
+				computerTotalAces += 11;
+			} else {
+				computerTotalAces += computerCards.get(i).getValue().getCardValue();
+			}
+			computerTotal += computerCards.get(i).getValue().getCardValue();
+		}
+		do {
+			System.out.println("Computer cards: " + computerCards.toString());
+			if (computerTotal != computerTotalAces) {
+				System.out.println("Computer's total is: " + computerTotal + " or " + computerTotalAces);;
+			} else {
+				System.out.println("Computer's total is: " + computerTotal);
+			}
+			System.out.println("Computer hits.");
+			computerCards.add(deck.get(currentCard));
+			int newCard = deck.get(currentCard).getValue().getCardValue();
+			currentCard++;
+			if (newCard == 1 && computerTotal == computerTotalAces) {
+				computerTotal += 1;
+				computerTotalAces += 11;
+			} else {
+				computerTotal += newCard;
+				computerTotalAces += newCard;
+			}
+		} while (computerTotal <= 17 || computerTotalAces <= 17);
+		
+		if (computerTotalAces < 21 && computerTotalAces > computerTotal) {
+			System.out.println("Computer's cards: " + computerCards.toString());
+			System.out.println("Computer's final total is: " + computerTotalAces);
+			return computerTotalAces;
+		} else {
+			System.out.println("Computer's cards: " + computerCards.toString());
+			System.out.println("Computer's final total is: " + computerTotal);
+		}
+		return computerTotal;
 	}
 }
