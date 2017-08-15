@@ -65,7 +65,7 @@ public class BlackJackGame {
 	// Shuffles and deals starting cards
 	public static int dealCards() {
 		Collections.shuffle(deck);
-		System.out.println(deck.toString());
+		// System.out.println(deck.toString());
 		playerCards.add(deck.get(currentCard));
 		currentCard++;
 		computerCards.add(deck.get(currentCard));
@@ -190,6 +190,8 @@ public class BlackJackGame {
 	public static void checkWin(int playerTotal, int computerTotal) {
 		if (playerTotal > 21 && computerTotal > 21) {
 			System.out.println("You and the Dealer busted! It's a draw.");
+		} else if (playerTotal == computerTotal) {
+			System.out.println("Your " + playerTotal + " is equal to the Dealer's " + computerTotal + ". It's a draw.");
 		} else if (playerTotal > 21 && computerTotal < 21) {
 			System.out.println("You busted! The Dealer wins.");
 		} else if (playerTotal < 21 && computerTotal > 21) {
