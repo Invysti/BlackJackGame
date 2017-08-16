@@ -93,6 +93,7 @@ public class BlackJackGame {
 			playerTotal += playerCards.get(i).getValue().getCardValue();
 		}
 		// Prompts user if they would like to hit and checks whether they type hit and if they have a hand below 21
+		System.out.println("The Dealer has a " + computerCards.get(1).getValue() + " showing.");
 		String playerChoice = "";
 		do {
 			System.out.println("Player cards: " + playerCards.toString());
