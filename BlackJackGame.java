@@ -1,6 +1,7 @@
 import java.util.*;
 
 // TODO work on abstraction/redundancy for playerTurn and computerTurn
+// TODO work on playing multiple rounds, main issue here is the total adds up from the first round in the second round
 
 public class BlackJackGame {
 
