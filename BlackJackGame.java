@@ -1,7 +1,6 @@
 import java.util.*;
 
 // TODO work on abstraction/redundancy for playerTurn and computerTurn
-// TODO work on playing multiple rounds, main issue here is the total adds up from the first round in the second round
 
 public class BlackJackGame {
 
@@ -14,13 +13,23 @@ public class BlackJackGame {
 	public static void main(String[] args) {
 		Scanner keyboard = new Scanner(System.in);
 		intro(keyboard);
-		//int rounds = getRounds(keyboard);
+		int rounds = getRounds(keyboard);
 		fill();
-		// play game
-		dealCards();
-		int playerTotal = playerTurn(keyboard);
-		int computerTotal = computerTurn();
-		checkWin(playerTotal, computerTotal);
+		// Plays blackjack rounds number of times
+		for (int i = 0; i < rounds; i++) {
+			System.out.println("Round: " + (i+1));
+			// resets the player and dealer's hand
+			playerCards.clear();
+			computerCards.clear();
+			dealCards();
+			// returns the player and dealer's total to 0 at the beginning of each round
+			int playerTotal = 0;
+			int computerTotal = 0;
+			playerTotal = playerTurn(keyboard);
+			computerTotal = computerTurn();
+			checkWin(playerTotal, computerTotal);
+		}
+		System.out.println("Thanks for playing!");
 	}
 
 	// Prints out the introduction to the game.
@@ -31,6 +40,7 @@ public class BlackJackGame {
 	}
 	
 	// Gets the number of rounds the user would like to play.
+	// Currently not used
 	public static int getRounds(Scanner keyboard) {
 		int rounds;
 		System.out.println("How many rounds from 1 to 10 would you like to play?");
@@ -191,11 +201,11 @@ public class BlackJackGame {
 			System.out.println("You and the Dealer busted! It's a draw.");
 		} else if (playerTotal == computerTotal) {
 			System.out.println("Your " + playerTotal + " is equal to the Dealer's " + computerTotal + ". It's a draw.");
-		} else if (playerTotal > 21 && computerTotal < 21) {
+		} else if (playerTotal > 21 && computerTotal <= 21) {
 			System.out.println("You busted! The Dealer wins.");
-		} else if (playerTotal < 21 && computerTotal > 21) {
+		} else if (playerTotal <= 21 && computerTotal > 21) {
 			System.out.println("The Dealer busted! You win!!");
-		} else if (playerTotal < 21 && computerTotal < 21 && playerTotal > computerTotal) {
+		} else if (playerTotal <= 21 && computerTotal <= 21 && playerTotal > computerTotal) {
 			System.out.println("Your " + playerTotal + " is greater than the Dealer's " + computerTotal + ". You win!!");
 		} else {
 			System.out.println("Your " + playerTotal + " is less than the Dealer's " + computerTotal + ". You lose.");
