@@ -1,6 +1,5 @@
 import java.util.*;
 
-// TODO check winner
 // TODO work on abstraction/redundancy for playerTurn and computerTurn
 
 public class BlackJackGame {
@@ -175,6 +174,7 @@ public class BlackJackGame {
 		return printTotal(Name, computerTotal, computerTotalAces);
 	}
 	
+	// Print's the total of the hand to standard output.
 	static int printTotal(String Name, int total, int totalAces) {
 		if (totalAces < 21 && totalAces > total) {
 			System.out.println(Name + "'s final total is: " + totalAces);
