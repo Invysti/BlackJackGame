@@ -113,15 +113,9 @@ public class BlackJackGame {
 			}
 			
 		} while (playerChoice.equals("hit") && playerTotal <= 21);
-		if (playerTotalAces < 21 && playerTotalAces > playerTotal) {
-			System.out.println("Player cards: " + playerCards.toString());
-			System.out.println("Your final total is: " + playerTotalAces);
-			return playerTotalAces;
-		} else {
-			System.out.println("Player cards: " + playerCards.toString());
-			System.out.println("Your final total is: " + playerTotal);
-		}
-		return playerTotal;
+		String Name = "Player";
+		System.out.println(Name + "'s cards: " + playerCards.toString());
+		return printTotal(Name, playerTotal, playerTotalAces);
 	}
 	
 	// Add card if user chooses to hit
@@ -176,16 +170,19 @@ public class BlackJackGame {
 				computerTotalAces += newCard;
 			}
 		} while (computerTotal <= 17 || computerTotalAces <= 17);
-		
-		if (computerTotalAces < 21 && computerTotalAces > computerTotal) {
-			System.out.println("Dealer's cards: " + computerCards.toString());
-			System.out.println("Dealer's final total is: " + computerTotalAces);
-			return computerTotalAces;
+		String Name = "Dealer";
+		System.out.println(Name + "'s cards: " + computerCards.toString());
+		return printTotal(Name, computerTotal, computerTotalAces);
+	}
+	
+	static int printTotal(String Name, int total, int totalAces) {
+		if (totalAces < 21 && totalAces > total) {
+			System.out.println(Name + "'s final total is: " + totalAces);
+			return totalAces;
 		} else {
-			System.out.println("Dealer's cards: " + computerCards.toString());
-			System.out.println("Dealer's final total is: " + computerTotal);
+			System.out.println(Name + "'s final total is: " + total);
 		}
-		return computerTotal;
+		return total;
 	}
 	
 	public static void checkWin(int playerTotal, int computerTotal) {
