@@ -73,18 +73,15 @@ public class BlackJackGame {
 	}
 	
 	// Shuffles and deals starting cards
-	public static int dealCards() {
+	public static void dealCards() {
 		Collections.shuffle(deck);
 		// System.out.println(deck.toString());
-		playerCards.add(deck.get(currentCard));
-		currentCard++;
-		computerCards.add(deck.get(currentCard));
-		currentCard++;
-		playerCards.add(deck.get(currentCard));
-		currentCard++;
-		computerCards.add(deck.get(currentCard));
-		currentCard++;
-		return currentCard;
+		for (int i = 0; i < 2; i++) { 
+			playerCards.add(deck.get(currentCard));
+			currentCard++;
+			computerCards.add(deck.get(currentCard));
+			currentCard++;
+		}
 	}
 	
 	// Player's turn
