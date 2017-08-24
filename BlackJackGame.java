@@ -193,6 +193,7 @@ public class BlackJackGame {
 		return total;
 	}
 	
+	// Checks to see who has won the game.
 	public static void checkWin(int playerTotal, int computerTotal) {
 		if (playerTotal > 21 && computerTotal > 21) {
 			System.out.println("You and the Dealer busted! It's a draw.");
